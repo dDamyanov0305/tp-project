@@ -19,18 +19,11 @@ class App extends Component {
   }
 
   //everything needs to be moved to express app
-  componentDidMount(){
-    const storageRef=storage.ref();
+  componentDidMount(){    
     auth.onAuthStateChanged(user=>{
       if(user){
         db.collection('users').doc(user.uid).get().then(doc=>{
-          this.setState({
-            user:{
-              ...doc.data(),
-              uid:user.uid,
-              avatar:user.photoURL
-            }
-          });
+          this.setState({user:{...doc.data(),uid:user.uid}});
         });
       }
       else{
@@ -40,26 +33,13 @@ class App extends Component {
     });
 
     db.collection('books').orderBy('uploaded_at','desc').onSnapshot(snapshot=>{
-
-      let updated = snapshot.docs.map(doc => ({
-          ...doc.data(),
-          id:doc.id
-        })
-      );
-
-      let new_ = updated.filter(doc => 
-        !this.state.books.toString().includes(doc.id.toString())
-      );
-
-      this.setState({books:updated});
-      let { covers } = this.state;
-      
-      new_.forEach(doc=>{
-        storageRef.child('images/'+doc.filename).getDownloadURL().then(url=>{
-          covers[doc.filename] = url;
-          this.setState({covers});
-        })
-      })
+      const docs = 
+        snapshot.docs
+        .map(doc=>({...doc.data()}));
+       
+      docs.map(doc=>{storage.ref().child('avatars/'+doc.uploader.id).getDownloadURL().then(url=>{doc.uploader.url=url})});
+          
+      this.setState({books:docs});
     })
   }
 
@@ -73,12 +53,11 @@ class App extends Component {
           <Switch>
             <Route path='/signIn' component={SignInForm}/>
             <Route path='/signUp' component={FormBase}/>
-            <Route path='/addbook' component={BookForm}/>
+            <Route path='/add' component={BookForm}/>
             <Route path='/' render={()=>(
               <Body 
                 items={state.books} 
                 user={state.user} 
-                covers={state.covers}
               />
             )}/>
           </Switch>

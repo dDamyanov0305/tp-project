@@ -27,7 +27,7 @@ const styles = theme => ({
 const cols=3;
 
 const Body = props =>{
-    const { classes, user, covers } = props;
+    const { classes, user, items } = props;
     return(
         <div className={classes.root}>
         <Grid direction="column" container className={classes.sideGrid}>
@@ -38,10 +38,10 @@ const Body = props =>{
           </Grid>
         </Grid>
         <GridList cellHeight={"auto"} className={classes.gridList} cols={cols}>
-            {props.items.map((item,index)=>(
+            {items.map((item,index)=>(
               <Grow in timeout={500*(index%cols+1)} key={index}>
                 <GridListTile cols={1}>
-                    <ItemCard item={item} user={user} image={covers[item.filename]}/>
+                    <ItemCard item={item} user={user}/>
                 </GridListTile>
               </Grow>
             ))}

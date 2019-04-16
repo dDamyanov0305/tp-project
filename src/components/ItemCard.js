@@ -49,15 +49,14 @@ const styles = theme => ({
 
 const ItemCard = props =>{
 
-    const { classes, item, user } = props;
-    const avatar = item.uploader.avatar ? 
+    const { classes, item } = props;
+    const avatar = item.uploader.url ? 
       
-      (<Avatar aria-label="avatar" src={item.uploader.photoURL||""}/>) :
+      (<Avatar aria-label="avatar" src={item.uploader.url}/>) :
       (<Avatar aria-label="avatar" className={classes.avatar}>
         {item.uploader.name.split(" ")[0][0] + item.uploader.name.split(" ")[1][0]}
       </Avatar>);
 
-    
 
     return (
       <Card className={classes.card}>
@@ -77,7 +76,7 @@ const ItemCard = props =>{
         />
         <CardMedia
           className={classes.media}
-          image={props.image}
+          image={item.url}
         />
         <CardContent>
           <Grid container spacing={16}>

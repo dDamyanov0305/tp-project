@@ -28,7 +28,7 @@ const DrawerContent = props =>{
             <div className={classes.root}>
                 <Grid container direction="column" alignItems="center">
                     <Grid item xs>
-                        <Avatar src={user.avatar||""}className={classes.avatar}/>            
+                        <Avatar src={user.url}className={classes.avatar}/>            
                     </Grid>
                     <Grid item xs>
                         <Typography variant="h6" className={classes.username} color="inherit">
@@ -40,7 +40,7 @@ const DrawerContent = props =>{
                             variant="text" 
                             color="inherit" 
                             className={classes.button}
-                            onClick={()=>{history.push('/addbook')}}
+                            onClick={()=>{history.push('/add')}}
                         >
                             add book
                         </Button>      
