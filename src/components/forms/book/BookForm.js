@@ -5,7 +5,6 @@ import {
     Input,
     InputLabel,
     InputAdornment,
-    Paper,
     Grid,
     Button
 } from '@material-ui/core';
@@ -46,8 +45,8 @@ class BookForm extends Component{
                     url,
                     available:true,
                     uploader:{
-                        id:'id',
-                        name:'name'
+                        id:'UiZXZZdjwJR3aWhTNtawTsaDpkk1',
+                        name:'name name'
                     },
                     uploaded_at: new Date(),
                 });

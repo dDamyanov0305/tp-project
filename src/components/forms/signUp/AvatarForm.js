@@ -29,7 +29,6 @@ class AvatarForm extends React.Component{
         }
     }
 
-    
 
     render(){
 
