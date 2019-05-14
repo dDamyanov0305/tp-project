@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import { auth } from '../../config/FirebaseConfig';
 import classNames from 'classnames';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import CustomDrawer from './CustomDrawer';
 import BackButton from './BackButton';
 import Nav from './Nav';
@@ -15,7 +14,7 @@ import drawerWidth from '../../config/DrawerWidth';
 const styles = theme => ({
   root: {
     display: 'flex',
-    backgroundColor: '#f5f5f5',
+    //backgroundColor: '#f5f5f5',
   },
   content: {
     flexGrow: 1,
@@ -105,15 +104,21 @@ class Layout extends React.Component {
       handleProfileMenuOpen:this.handleProfileMenuOpen,
     }
 
+    const CustomDrawerProps={
+      open,
+      history,
+      user,
+      isUserPresent,
+    }
+
     return (
       <div className={classes.root}>
-        <CssBaseline/>
         <Nav {...NavProps}/>
         <DesktopMenu {...DesktopMenuProps}/>
         <MobileMenu {...MobileMenuProps}/>
-        <CustomDrawer open={open} history={history} user={user}/>
+        <CustomDrawer {...CustomDrawerProps}/>
         <div className={classNames(classes.content, {[classes.contentShift]: open})}>
-        <BackButton history={history} location={this.props.location}/>
+        <BackButton history={history}/>
         {this.props.children}
         </div>
       </div>

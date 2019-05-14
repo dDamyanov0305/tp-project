@@ -3,8 +3,9 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 
-function BasicInfo(props) {
+const BasicInfo = (props) => {
   const { state } = props;
+
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>

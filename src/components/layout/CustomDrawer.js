@@ -14,7 +14,8 @@ import {
 import { 
     People, 
     Chat, 
-    FolderSpecial
+    FolderSpecial,
+    ShoppingBasket,
 } from '@material-ui/icons'
 import drawerWidth from '../../config/DrawerWidth';
 
@@ -28,7 +29,7 @@ const styles = theme =>({
     },
     drawerPaper: {
         width: drawerWidth,
-        backgroundColor: "#651fff",
+        backgroundColor: "#6510ff",
     },
     avatar:{
         height: 110,
@@ -45,8 +46,7 @@ const styles = theme =>({
 
 const CustomDrawer = props =>{
 
-        const { classes, user, history, open } = props;
-        const isUserPresent = Boolean(user);
+        const { classes, user, history, open, isUserPresent } = props;
         
         return(
             <Drawer 
@@ -87,12 +87,12 @@ const CustomDrawer = props =>{
                                 Subscriptions
                             </Typography>     
                         </ListItem>
-                        <ListItem button> 
+                        <ListItem button onClick={()=>{history.push('/uploads')}}> 
                             <ListItemIcon>
                                 <FolderSpecial/>
                             </ListItemIcon>                    
                             <Typography variant="h6"  color="inherit">
-                                Your adds
+                                Uploads
                             </Typography>     
                         </ListItem>
                         <ListItem button>
@@ -101,6 +101,14 @@ const CustomDrawer = props =>{
                             </ListItemIcon>
                             <Typography variant="h6" color="inherit">
                                 Chats
+                            </Typography>     
+                        </ListItem>
+                        <ListItem button onClick={()=>{history.push('/basket')}}>
+                            <ListItemIcon >
+                                <ShoppingBasket/>
+                            </ListItemIcon>
+                            <Typography variant="h6" color="inherit">
+                                Basket
                             </Typography>     
                         </ListItem>
                     </List>

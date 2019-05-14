@@ -5,7 +5,7 @@ import { Fab } from '@material-ui/core';
 import { KeyboardArrowLeft } from '@material-ui/icons';
 import Typography from '@material-ui/core/Typography';
 
-const styles=theme=>({
+const styles=()=>({
     backButton:{
         marginTop: 56,
         marginLeft: -15,
@@ -26,9 +26,9 @@ const styles=theme=>({
 
 const BackButton = props =>{
 
-    const { classes, history, location } = props;
+    const { classes, history } = props;
 
-    if(location.pathname!=='/'){
+    if(history.location.pathname!=='/'){
         return (
             <Fab variant="extended" className={classes.backButton} onClick={history.goBack}>
                 <KeyboardArrowLeft className={classes.backIcon}/>

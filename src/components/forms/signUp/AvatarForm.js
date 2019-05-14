@@ -5,15 +5,11 @@ import {Avatar, Button, Input} from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 
-const getRandomColor=()=>Math.floor(Math.random()*16777215).toString(16);
-
-const color=`#${getRandomColor}`;
-
-let styles=theme=>({
+const styles=()=>({
     avatarBefore:{
         width:200,
         height:200,
-        backgroundColor:color,
+        backgroundColor:`${Math.floor(Math.random()*16777215).toString(16)}`,
     },
     input:{
         display:"none",
@@ -21,19 +17,17 @@ let styles=theme=>({
 
 });
 
+
 class AvatarForm extends React.Component{
+    
     constructor(props){
         super(props);
-        this.state={
-            color:color,
-        }
+
     }
 
-
     render(){
-
         const { classes, state }=this.props;
-    
+
         return(
             <Grid container direction="column" alignItems="center" spacing={24}>
                 <Grid item xs={12}>              
@@ -57,7 +51,7 @@ class AvatarForm extends React.Component{
                     </Button>
                 </Grid>
                 <Grid item xs={12}>
-                    <Button variant="outlined" color="primary" onClick={getRandomColor}>
+                    <Button variant="outlined" color="primary">
                         Get random color
                     </Button>
                 </Grid> 

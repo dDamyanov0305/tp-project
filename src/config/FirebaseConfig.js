@@ -3,7 +3,7 @@ import 'firebase/auth'
 import 'firebase/firestore'
 import 'firebase/storage'
 
-var config = {
+const config = {
     apiKey: "AIzaSyD0m7PlxACESoXpjlzNi4wMVIGAXPsiOTQ",
     authDomain: "book-shop-tues.firebaseapp.com",
     databaseURL: "https://book-shop-tues.firebaseio.com",

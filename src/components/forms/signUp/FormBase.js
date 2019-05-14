@@ -3,47 +3,38 @@ import StepperForm from './StepperForm'
 import { auth, db, storage } from '../../../config/FirebaseConfig'
 
 class FormBase extends Component{
-    state={
-        firstName: '',
-        lastName: '',
-        email: '',
-        password: '',
-        avatar: false,
-        color:'',
-        image:'',
-        file:'',
-        addressLine1: '',
-        addressLine2: '',
-        city: '',
-        region: '',
-        zip: '',
-        country: '',
+    constructor(props){
+        super(props);
+        this.state = {
+            firstName: '',
+            lastName: '',
+            email: '',
+            password: '',
+            avatar: false,
+            color:'',
+            image:'',
+            file:'',
+            addressLine1: '',
+            addressLine2: '',
+            city: '',
+            region: '',
+            zip: '',
+            country: '',
+            basket:[],
+            purchased:[],
+        }
     }
+    
 
     handleSubmit = (e) => {
-
         e.preventDefault();
-
-        const { 
-            password, 
-            image, 
-            avatar, 
-            file,
-            color,
-            ...rest
-        } = this.state;
-
-        let values = {
-            ...rest,
-            basket:null, 
-            purchased:null
-        };
+        const { password, image, avatar, file, color, ...rest } = this.state;
 
         auth
             .createUserWithEmailAndPassword(this.state.email, this.state.password)
             .then(cred=>{
                 
-                db.collection("users").doc(cred.user.uid).set(values);
+                db.collection("users").doc(cred.user.uid).set(rest);
 
                 if(avatar){
                     storage.ref().child('avatars/'+cred.user.uid).put(this.state.file).then((snapshot)=>{
@@ -55,10 +46,7 @@ class FormBase extends Component{
                 } 
                 
             })
-
-            setTimeout(()=>{this.props.history.push('/');},5000);
-            
-            
+            setTimeout(()=>{this.props.history.push('/');},3000);
     }
 
     handleChange = (e) =>{
@@ -82,11 +70,13 @@ class FormBase extends Component{
 
 
     render(){
-        return <StepperForm 
-                    state={this.state} 
-                    handleSubmit={this.handleSubmit} 
-                    handleChange={this.handleChange}
-                />;
+        return (
+            <StepperForm 
+                state={this.state} 
+                handleSubmit={this.handleSubmit} 
+                handleChange={this.handleChange}
+            />
+        );
     }
 
 }

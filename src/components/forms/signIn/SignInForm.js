@@ -68,9 +68,7 @@ class SignInForm extends Component{
   render(){
     const { classes } = this.props;
   
-    return (
-      <>
-      
+    return (      
       <main className={classes.main}>
         <CssBaseline />
         <Paper className={classes.paper}>
@@ -113,14 +111,13 @@ class SignInForm extends Component{
               variant="contained"
               color="primary"
               className={classes.submit}
-              
             >
               Sign in
             </Button>
           </form>
         </Paper>
       </main>
-      </>
+      
     );
   }
 }
@@ -129,4 +126,4 @@ SignInForm.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(SignInForm);
+export default withStyles(styles,{withTheme:true})(SignInForm);
