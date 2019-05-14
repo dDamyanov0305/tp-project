@@ -82,9 +82,9 @@ class Layout extends React.Component {
       handleMobileMenuOpen:this.handleMobileMenuOpen,
       handleProfileMenuOpen:this.handleProfileMenuOpen,
       isMenuOpen,
-      isUserPresent,
       open,
-      history
+      history,
+      user,
     };
 
     const DesktopMenuProps={

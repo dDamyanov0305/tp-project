@@ -45,21 +45,27 @@ class App extends Component {
 
           const userData={...snapshot.data(), uid:user.uid};
 
-          userData.basket=this.state.items.filter(item=>userData.basket.includes(item.id));
+          const {basket,purchased}=userData;
 
-          userData.purchased=this.state.items.filter(item=>userData.purchased.includes(item.id));
+          userData.basket=[];
+          userData.purchased=[];
+          userData.uploads=[];
+          
+          basket.forEach(item=>db.collection('books').doc(item).get().then(doc=>userData.basket.push(doc.data())));
 
-          userData.uploads=this.state.items.filter(item=>item.uploader.id===user.uid);          
-
-          /*userData.basket.forEach(itemID=>db.collection('books').doc(itemID).get().then(doc=>itemID=doc.data()));
-
-          userData.purchased = userData.purchased.map(itemID=>db.collection('books').doc(itemID).get().then(doc=>doc.data()));
-
+          purchased.forEach(item=>db.collection('books').doc(item).get().then(doc=>userData.purchased.push(doc.data())));
+          
           db.collection('books').where('uploader.id','==',user.uid).onSnapshot(snapshot=>{
 
             userData.uploads = snapshot.docs.map(doc=>doc.data());
 
-          })*/
+          })
+
+          /*userData.basket=this.state.items.filter(item=>userData.basket.includes(item.id));
+
+          userData.purchased=this.state.items.filter(item=>userData.purchased.includes(item.id));
+
+          userData.uploads=this.state.items.filter(item=>item.uploader.id===user.uid);*/     
           
 
           db.collection('requests').where('owner','==',user.uid).get().then(docs=>{
@@ -73,6 +79,7 @@ class App extends Component {
               const item = this.state.items.find(item=>item.id===req.item);
 
               db.collection('users').doc(req.buyer).get()
+
               .then(doc => { userData.requests.push({ item, buyer : doc.data(), seen:req.seen, aprooved:req.aprooved })});
 
             })

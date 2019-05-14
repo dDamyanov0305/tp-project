@@ -106,7 +106,9 @@ const styles=theme=>({
 
 const Nav = props =>{
 
-    const { classes, open, history, isUserPresent, isMenuOpen } = props;
+    const { classes, open, history, user, isMenuOpen } = props;
+    const isUserPresent=Boolean(user);
+    const notifications=isUserPresent&&user.requests.filter(req=>!req.seen).length;
 
     return(
 
@@ -117,12 +119,13 @@ const Nav = props =>{
         >
           <Toolbar>
 
-            {isUserPresent&&<IconButton 
-                className={classes.menuButton} 
-                color="inherit" 
-                aria-label="Open drawer"
-                onClick={props.toggleDrawer}  
-              >
+            {isUserPresent&&
+            <IconButton 
+              className={classes.menuButton} 
+              color="inherit" 
+              aria-label="Open drawer"
+              onClick={props.toggleDrawer}  
+            >
               <MenuIcon />
             </IconButton>}
             
@@ -144,17 +147,25 @@ const Nav = props =>{
               />
             </div>
               
-            {isUserPresent&&<div className={classes.sectionDesktop}>
+            {isUserPresent&&
+            <div className={classes.sectionDesktop}>
               <IconButton color="inherit">
                 <Badge badgeContent={4} color="secondary">
                   <MailIcon />
                 </Badge>
               </IconButton>
-              <IconButton color="inherit">
-                <Badge badgeContent={17} color="secondary">
+              {notifications!==0&&
+                <IconButton color="inherit">
+                  <Badge badgeContent={notifications} color="secondary">
+                    <NotificationsIcon />
+                  </Badge>
+                </IconButton>
+              }
+              {notifications===0&&
+                <IconButton color="inherit">
                   <NotificationsIcon />
-                </Badge>
-              </IconButton>
+                </IconButton>
+              }
               <IconButton
                 aria-owns={isMenuOpen ? 'material-appbar' : undefined}
                 aria-haspopup="true"
@@ -165,7 +176,8 @@ const Nav = props =>{
               </IconButton>
             </div>}
               
-            {!isUserPresent&&<div className={classes.sectionDesktop}>
+            {!isUserPresent&&
+            <div className={classes.sectionDesktop}>
               <Button onClick={()=>{history.push('/signIn')}} className={classes.button}>
                 Log In     
               </Button>
