@@ -30,7 +30,7 @@ const Item = props =>{
 
     return(
         <div className={classes.root}>
-            <img src={item.url} alt="book cover" className={classes.image} onClick={()=>{props.history.push('/b/'+item.id)}}/>
+            <img src={item.image} alt="book cover" className={classes.image} onClick={()=>{props.history.push('/b/'+item.id)}}/>
             <Typography variant="title">
                 {item.title}
             </Typography>

@@ -6,7 +6,8 @@ import AlternateBody from './AlternateBody';
 
 const styles = theme =>({
     root:{
-        padding:10
+        padding:10,
+        marginTop:56,
     },
     image:{
         width:100,
@@ -27,13 +28,13 @@ const styles = theme =>({
 const Show = props =>{
 
     const {item,classes,books}=props;
-    const similar = books.filter(book=>(book.author===item.author && book.id!==item.id/*|| book.categories.some(e=>item.categories.includes(e))*/));
+    const similar = books.filter(book=>(book.author===item.author && book.id!==item.id || book.categories.some(e=>item.categories.includes(e))));
     
 
     return(
         <div>
             <div className={classes.root}>
-                <img src={item.url} alt="image" className={classes.image}/>
+                <img src={item.image} alt="image" className={classes.image}/>
                 <Typography variant="title">
                     {item.title}
                 </Typography>
@@ -44,7 +45,7 @@ const Show = props =>{
                     {item.price}$
                 </Typography>
                 <Button className={classes.button} onClick={()=>{props.handleBasketChange(item,"A")}}>
-                    <Typography variant="paragraph" className={classes.buttonText}>
+                    <Typography className={classes.buttonText}>
                         add to basket
                     </Typography>
                 </Button>

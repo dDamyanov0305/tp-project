@@ -12,6 +12,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
+import Home from '@material-ui/icons/Home';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
@@ -127,7 +128,8 @@ const Nav = props =>{
               onClick={props.toggleDrawer}  
             >
               <MenuIcon />
-            </IconButton>}
+            </IconButton>
+            }
             
             <Typography className={classes.title} variant="h6" color="inherit" noWrap>
               Book Marketplace
@@ -149,10 +151,11 @@ const Nav = props =>{
               
             {isUserPresent&&
             <div className={classes.sectionDesktop}>
+              <IconButton color="inherit" onClick={()=>{history.push('/')}}>
+                <Home />
+              </IconButton>
               <IconButton color="inherit">
-                <Badge badgeContent={4} color="secondary">
-                  <MailIcon />
-                </Badge>
+                <MailIcon />
               </IconButton>
               {notifications!==0&&
                 <IconButton color="inherit">

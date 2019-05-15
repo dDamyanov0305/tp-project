@@ -24,22 +24,19 @@ class BookForm extends Component{
     constructor(props){
         super(props);
         this.state={
-            format:'',
-            pages:'',
-            weigth:'',
-            dimensions:'',
-            language:'',
-            title:'',
-            author:'',
-            price:'',
+            format:'',//paperback
+            pages:'',//200
+            weigth:'',//500
+            dimensions:'',//1x1x1
+            language:'',//English
+            title:'',//three men on a boat
+            author:'',//Jerome Jerome
+            price:'',//20.00
             image:null,
             file:'',
-            review:'',
-            categories:'',
-            uploader:{
-                id:this.props.uploader.uid,
-                name:`${this.props.uploader.firstName} ${this.props.uploader.lastName}`
-            },
+            review:'',//review
+            categories:'',//comedy,...
+            uploaderID:this.props.uploader.uid,
             available:true,
         }
 
@@ -47,22 +44,24 @@ class BookForm extends Component{
 
     handleSubmit=(e)=>{
         e.preventDefault();
-        let { image, file, categories, dimensions, ...rest } = this.state;
-
-        categories=categories.split(",");
-        dimensions=dimensions.split("x");
+        const { image, file, ...rest } = this.state;
+    
+        rest.categories=rest.categories.split(",");
+        rest.dimensions=rest.dimensions.split("x");
 
         storage.ref().child('books/'+rest.title).put(file).then(snapshot=>{
+
             snapshot.ref.getDownloadURL().then(url=>{
+
                 db.collection("books").doc().set({
                     ...rest,
-                    categories,
-                    dimensions,
-                    url,
-                    uploaded_at: new Date(),
-                });
-            })
-        });
+                    image:url,
+                    uploadTime: new Date(),
+                })
+                .catch(reason=>{console.log(reason)});
+
+            }).catch(reason=>{console.log(reason)});
+        }).catch(reason=>{console.log(reason)});
         
     }
     
@@ -119,7 +118,7 @@ class BookForm extends Component{
                                 value={state.review}
                                 name="review" 
                                 type="text" 
-                                placeholder="Information about the book content*"
+                                placeholder="Review*"
                                 onChange={handleChange}
                             />
                             <InputLabel htmlFor="price"/>
@@ -127,8 +126,11 @@ class BookForm extends Component{
                                 required
                                 value={state.price}
                                 type="number"
-                                name="price"
-                                startAdornment={<InputAdornment position="start">$</InputAdornment>}
+                                name="price" 
+                                placeholder="20.00"
+                                startAdornment={
+                                    <InputAdornment position="start">$</InputAdornment>
+                                }
                                 onChange={handleChange}
                             />  
                             <InputLabel htmlFor="categories"/>
@@ -137,7 +139,7 @@ class BookForm extends Component{
                                 value={state.categories}
                                 name="categories" 
                                 type="text" 
-                                placeholder="fantasy,horror,..."
+                                placeholder="Fantasy,Horror,..."
                                 onChange={handleChange}
                             />
                             <InputLabel htmlFor="format"/>
@@ -146,7 +148,7 @@ class BookForm extends Component{
                                 value={state.format}
                                 name="format" 
                                 type="text" 
-                                placeholder="width x heigth x thicc"
+                                placeholder="Paperback*"
                                 onChange={handleChange}
                             />
                             <InputLabel htmlFor="weigth"/>
@@ -155,7 +157,7 @@ class BookForm extends Component{
                                 value={state.weigth}
                                 name="weigth" 
                                 type="text" 
-                                placeholder="500g"
+                                placeholder="weigth in grams"
                                 onChange={handleChange}
                             />
                             <InputLabel htmlFor="pages"/>
@@ -163,7 +165,17 @@ class BookForm extends Component{
                                 required 
                                 value={state.pages}
                                 name="pages" 
-                                type="number" 
+                                type="number"
+                                placeholder="Pages*" 
+                                onChange={handleChange}
+                            />
+                            <InputLabel htmlFor="dimensions"/>
+                            <Input
+                                required 
+                                value={state.dimensions}
+                                name="dimensions" 
+                                type="text" 
+                                placeholder="width x heigth x thicc"
                                 onChange={handleChange}
                             />
                             <InputLabel htmlFor="language"/>
@@ -171,7 +183,8 @@ class BookForm extends Component{
                                 required 
                                 value={state.language}
                                 name="language" 
-                                type="text" 
+                                type="text"
+                                placeholder="Language*" 
                                 onChange={handleChange}
                             />       
                             <Input 

@@ -6,10 +6,12 @@ import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
+import Home from '@material-ui/icons/Home';
 
 const MobileMenu = props =>{
 
-    const { mobileMoreAnchorEl, isMobileMenuOpen, isUserPresent, history } = props;
+    const { mobileMoreAnchorEl, isMobileMenuOpen, user, history } = props;
+    let isUserPresent=Boolean(user);
 
     if(isUserPresent){
         return (
@@ -22,17 +24,19 @@ const MobileMenu = props =>{
             >
                 <MenuItem onClick={props.handleMobileMenuClose}>
                     <IconButton color="inherit">
-                        <Badge badgeContent={4} color="secondary">
-                            <MailIcon />
-                        </Badge>
+                        <Home />
+                    </IconButton>
+                    <p>Home</p>
+                </MenuItem>
+                <MenuItem onClick={props.handleMobileMenuClose}>
+                    <IconButton color="inherit">
+                        <MailIcon />
                     </IconButton>
                     <p>Messages</p>
                 </MenuItem>
                 <MenuItem onClick={props.handleMobileMenuClose}>
                     <IconButton color="inherit">
-                        <Badge badgeContent={11} color="secondary">
-                            <NotificationsIcon />
-                        </Badge>
+                        <NotificationsIcon />
                     </IconButton>
                     <p>Notifications</p>
                 </MenuItem>

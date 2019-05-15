@@ -14,7 +14,6 @@ import drawerWidth from '../../config/DrawerWidth';
 const styles = theme => ({
   root: {
     display: 'flex',
-    //backgroundColor: '#f5f5f5',
   },
   content: {
     flexGrow: 1,
@@ -37,11 +36,15 @@ const styles = theme => ({
 
 
 class Layout extends React.Component {
-  state = {
-    anchorEl: null,
-    mobileMoreAnchorEl: null,
-    open: false,
-  };
+  constructor(props){
+    super(props);
+    this.state = {
+        anchorEl: null,
+        mobileMoreAnchorEl: null,
+        open: false,
+      }
+  }
+  
 
   handleProfileMenuOpen = event => {
     this.setState({ anchorEl: event.currentTarget });
@@ -70,10 +73,11 @@ class Layout extends React.Component {
     this.setState({open:false});
   }
 
+
+
   render() {
     const { anchorEl, mobileMoreAnchorEl, open } = this.state;
     const { classes, user, history } = this.props;
-    const isUserPresent = Boolean(user);
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
@@ -97,7 +101,7 @@ class Layout extends React.Component {
     const MobileMenuProps={
       mobileMoreAnchorEl,
       isMobileMenuOpen,
-      isUserPresent,
+      user,
       history,
       handleMobileMenuClose:this.handleMobileMenuClose,
       handleMenuClose:this.handleMenuClose,
@@ -108,7 +112,6 @@ class Layout extends React.Component {
       open,
       history,
       user,
-      isUserPresent,
     }
 
     return (

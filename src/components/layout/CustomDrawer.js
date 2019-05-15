@@ -16,6 +16,7 @@ import {
     Chat, 
     FolderSpecial,
     ShoppingBasket,
+    CollectionsBookmark
 } from '@material-ui/icons'
 import drawerWidth from '../../config/DrawerWidth';
 
@@ -29,7 +30,7 @@ const styles = theme =>({
     },
     drawerPaper: {
         width: drawerWidth,
-        backgroundColor: "#6510ff",
+        background: 'linear-gradient(-45deg, #aa00ff 30%, #512da8 90%)',
     },
     avatar:{
         height: 110,
@@ -46,7 +47,8 @@ const styles = theme =>({
 
 const CustomDrawer = props =>{
 
-        const { classes, user, history, open, isUserPresent } = props;
+        const { classes, user, history, open } = props;
+        let isUserPresent = Boolean(user);
         
         return(
             <Drawer 
@@ -93,6 +95,14 @@ const CustomDrawer = props =>{
                             </ListItemIcon>                    
                             <Typography variant="h6"  color="inherit">
                                 Uploads
+                            </Typography>     
+                        </ListItem>
+                        <ListItem button onClick={()=>{history.push('/purchased')}}> 
+                            <ListItemIcon>
+                                <CollectionsBookmark/>
+                            </ListItemIcon>                    
+                            <Typography variant="h6"  color="inherit">
+                                Purchases
                             </Typography>     
                         </ListItem>
                         <ListItem button>

@@ -7,7 +7,8 @@ const styles = theme =>({
     root:{
         marginTop:56,
         backgroundColor: theme.palette.background.paper,
-        display:'flex'
+        display:'flex',
+        boxShadow: '3px 3px rgba(255, 105, 135, .3)',
     }
 })
 

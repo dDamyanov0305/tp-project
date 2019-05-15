@@ -10,7 +10,7 @@ import Typography from '@material-ui/core/Typography';
 import BasicInfo from './BasicInfo';
 import AddressForm from './AddressForm';
 import AvatarForm from './AvatarForm';
-
+import red from '@material-ui/core/colors/red';
 
 const styles = theme => ({
   layout: {
@@ -44,6 +44,9 @@ const styles = theme => ({
     marginTop: theme.spacing.unit * 3,
     marginLeft: theme.spacing.unit,
   },
+  errorMessage:{
+    color:red[500],
+  }
 });
 
 
@@ -110,6 +113,9 @@ class StepperForm extends React.Component {
                 </Step>
               ))}
             </Stepper>
+            <Typography className={classes.errorMessage}>
+              {this.props.message}
+            </Typography>
             <React.Fragment>
               {activeStep === steps.length ? (
                 <React.Fragment>

@@ -22,6 +22,7 @@ class FormBase extends Component{
             country: '',
             basket:[],
             purchased:[],
+            message:'',
         }
     }
     
@@ -44,9 +45,11 @@ class FormBase extends Component{
                     });
                    
                 } 
-                
+                setTimeout(()=>{this.props.history.push('/');},3500);
             })
-            setTimeout(()=>{this.props.history.push('/');},3000);
+            .catch(err=>{this.setState({message:err.message})});
+
+            
     }
 
     handleChange = (e) =>{
