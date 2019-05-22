@@ -1,38 +1,10 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
 import { auth } from '../../config/FirebaseConfig';
-import classNames from 'classnames';
 import CustomDrawer from './CustomDrawer';
 import BackButton from './BackButton';
 import Nav from './Nav';
 import DesktopMenu from './DesktopMenu';
 import MobileMenu from './MobileMenu';
-import drawerWidth from '../../config/DrawerWidth';
-
-
-const styles = theme => ({
-  root: {
-    display: 'flex',
-  },
-  content: {
-    flexGrow: 1,
-    padding: theme.spacing.unit * 3,
-    transition: theme.transitions.create('margin', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-    marginLeft: -drawerWidth,
-  },
-  contentShift: {
-    transition: theme.transitions.create('margin', {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-    marginLeft: 0,
-  },
-
-});
 
 
 class Layout extends React.Component {
@@ -73,11 +45,9 @@ class Layout extends React.Component {
     this.setState({open:false});
   }
 
-
-
   render() {
     const { anchorEl, mobileMoreAnchorEl, open } = this.state;
-    const { classes, user, history } = this.props;
+    const { user, history } = this.props;
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
@@ -109,29 +79,24 @@ class Layout extends React.Component {
     }
 
     const CustomDrawerProps={
+      toggleDrawer:this.toggleDrawer,
       open,
       history,
       user,
     }
 
     return (
-      <div className={classes.root}>
+      <div>
         <Nav {...NavProps}/>
         <DesktopMenu {...DesktopMenuProps}/>
         <MobileMenu {...MobileMenuProps}/>
         <CustomDrawer {...CustomDrawerProps}/>
-        <div className={classNames(classes.content, {[classes.contentShift]: open})}>
         <BackButton history={history}/>
         {this.props.children}
-        </div>
       </div>
     );
   }
 }
 
-Layout.propTypes = {
-  classes: PropTypes.object.isRequired,
-  theme: PropTypes.object.isRequired,
-};
 
-export default withStyles(styles, { withTheme: true })(Layout);
+export default Layout;

@@ -1,4 +1,5 @@
 import React from 'react'
+import {Route,Switch} from 'react-router-dom'
 import { Typography, Button } from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles'
 import PropTypes from 'prop-types';
@@ -21,6 +22,11 @@ const styles = theme =>({
         marginLeft:10,
         marginRight:10,
         color:theme.palette.background.paper,
+    },
+    buttonText2:{
+        marginLeft:20,
+        marginRight:20 ,
+        color:theme.palette.background.paper,
     }
 })
 
@@ -40,11 +46,22 @@ const Item = props =>{
             <Typography variant="subtitle1" className={classes.price}>
                 {item.price}$
             </Typography>
-            <Button className={classes.button} onClick={()=>{props.handleBasketChange(item,"A")}}>
-                <Typography  className={classes.buttonText}>
-                    add to basket
-                </Typography>
-            </Button>
+            <Switch>
+                <Route path='/uploads' render={(props)=>(
+                    <Button className={classes.button} onClick={()=>{props.handleBasketChange(item,"A")}}>
+                        <Typography  className={classes.buttonText2}>
+                            edit
+                        </Typography>
+                    </Button>
+                )}/>
+                <Route path='/' render={(props)=>(
+                    <Button className={classes.button} onClick={()=>{props.handleBasketChange(item,"A")}}>
+                        <Typography  className={classes.buttonText}>
+                            add to basket
+                        </Typography>
+                    </Button>
+                )}/>
+            </Switch>
         </div>
     );
     

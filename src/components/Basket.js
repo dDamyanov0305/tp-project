@@ -9,15 +9,10 @@ import TableRow from '@material-ui/core/TableRow';
 import Clear from '@material-ui/icons/Clear';
 import Paper from '@material-ui/core/Paper';
 import { Typography, Button, IconButton } from '@material-ui/core';
+import {root} from '../config/css';
 
 const styles=theme=>({
-    root:{
-        marginTop:56,
-        marginLeft: theme.spacing.unit * 24,
-        marginRight: theme.spacing.unit * 24,
-        width: 'auto',
-        display: 'block',
-    },
+    root,
     image:{
         width:100,
     },
@@ -38,6 +33,7 @@ const styles=theme=>({
 const Basket = props =>{
 
     const { classes, items } = props;
+    const cells=["Book","Title","Author","Price"];
     let total=0;
     let discount=0;
 
@@ -50,26 +46,13 @@ const Basket = props =>{
                 <Table>
                     <TableHead>
                         <TableRow>
-                            <TableCell>
-                                <Typography variant='button'>
-                                    Book
-                                </Typography>
-                            </TableCell>
-                            <TableCell>
-                                <Typography variant='button'>
-                                    Title
-                                </Typography>
-                            </TableCell>
-                            <TableCell>
-                                <Typography variant='button'>
-                                    Author
-                                </Typography>
-                            </TableCell>
-                            <TableCell>
-                                <Typography variant='button'>
-                                    Price
-                                </Typography>
-                            </TableCell>
+                            {cells.map((e,index)=>(
+                                <TableCell key={index}>
+                                    <Typography variant='button'>
+                                        {e}
+                                    </Typography>
+                                </TableCell>
+                            ))}
                             <TableCell/>
                         </TableRow>
                     </TableHead>

@@ -16,24 +16,12 @@ import Home from '@material-ui/icons/Home';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
-import classNames from 'classnames';
-import drawerWidth from '../../config/DrawerWidth';
 
 const styles=theme=>({
     appBar: {
         boxShadow: 'none',
-        transition: theme.transitions.create(['margin', 'width'], {
-          easing: theme.transitions.easing.sharp,
-          duration: theme.transitions.duration.leavingScreen,
-        }),
-      },
-      appBarShift: {
-        width: `calc(100% - ${drawerWidth}px)`,
-        marginLeft: drawerWidth,
-        transition: theme.transitions.create(['margin', 'width'], {
-          easing: theme.transitions.easing.easeOut,
-          duration: theme.transitions.duration.enteringScreen,
-        }),
+        backgroundColor: '#fafafa',
+        color:'black',
       },
       grow: {
         flexGrow: 1,
@@ -115,8 +103,7 @@ const Nav = props =>{
 
         <AppBar 
           position="fixed" 
-          color='default' 
-          className={classNames(classes.appBar, {[classes.appBarShift]: open})}
+          className={classes.appBar}
         >
           <Toolbar>
 
@@ -134,8 +121,9 @@ const Nav = props =>{
             <Typography className={classes.title} variant="h6" color="inherit" noWrap>
               Book Marketplace
             </Typography>
-            
+
             <div className={classes.grow} />
+
             <div className={classes.search}>
               <div className={classes.searchIcon}>
                 <SearchIcon />
@@ -148,27 +136,26 @@ const Nav = props =>{
                 }}
               />
             </div>
-              
-            {isUserPresent&&
-            <div className={classes.sectionDesktop}>
+            
+
+            {isUserPresent?
+            (<div className={classes.sectionDesktop}>
               <IconButton color="inherit" onClick={()=>{history.push('/')}}>
                 <Home />
               </IconButton>
               <IconButton color="inherit">
                 <MailIcon />
               </IconButton>
-              {notifications!==0&&
-                <IconButton color="inherit">
-                  <Badge badgeContent={notifications} color="secondary">
+              <IconButton color="inherit" onClick={()=>{history.push('/requests')}}>
+                {
+                  (notifications!==0)?
+                  (<Badge badgeContent={notifications} color="secondary">
                     <NotificationsIcon />
-                  </Badge>
-                </IconButton>
-              }
-              {notifications===0&&
-                <IconButton color="inherit">
-                  <NotificationsIcon />
-                </IconButton>
-              }
+                  </Badge>):
+                  (<NotificationsIcon/>)
+                }
+                
+              </IconButton>
               <IconButton
                 aria-owns={isMenuOpen ? 'material-appbar' : undefined}
                 aria-haspopup="true"
@@ -177,17 +164,15 @@ const Nav = props =>{
               >
                 <AccountCircle />
               </IconButton>
-            </div>}
-              
-            {!isUserPresent&&
-            <div className={classes.sectionDesktop}>
+            </div>):  
+            (<div className={classes.sectionDesktop}>
               <Button onClick={()=>{history.push('/signIn')}} className={classes.button}>
                 Log In     
               </Button>
               <Button onClick={()=>{history.push('/signUp')}} variant="outlined" className={classes.button}>
                 Sign Up
               </Button>
-            </div>}
+            </div>)}
               
             <div className={classes.sectionMobile}>
               <IconButton aria-haspopup="true" onClick={props.handleMobileMenuOpen} color="inherit">

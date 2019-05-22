@@ -111,10 +111,7 @@ class SignInForm extends Component{
                 autoComplete="current-password"
               />
             </FormControl>
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            />
+            
             <Button
               type="submit"
               fullWidth

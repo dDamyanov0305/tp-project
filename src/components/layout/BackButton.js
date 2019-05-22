@@ -7,8 +7,7 @@ import Typography from '@material-ui/core/Typography';
 
 const styles=()=>({
     backButton:{
-        marginTop: 56,
-        marginLeft: -15,
+        marginLeft: 35,
         position:'fixed',
         backgroundColor: 'transparent',
         boxShadow: 'none',

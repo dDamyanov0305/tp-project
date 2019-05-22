@@ -18,7 +18,7 @@ class FormBase extends Component{
             addressLine2: '',
             city: '',
             region: '',
-            zip: '',
+            postalCode: '',
             country: '',
             basket:[],
             purchased:[],
@@ -28,23 +28,35 @@ class FormBase extends Component{
     
 
     handleSubmit = (e) => {
-        e.preventDefault();
-        const { password, image, avatar, file, color, ...rest } = this.state;
+        const { password, image, avatar, file, color, ...data } = this.state;
 
         auth
             .createUserWithEmailAndPassword(this.state.email, this.state.password)
             .then(cred=>{
+                auth.currentUser.sendEmailVerification().then(()=>{
+                    db.collection("users").doc(cred.user.uid).set(data);
+    
+                    if(avatar){
+                        storage.ref().child('avatars/'+cred.user.uid).put(this.state.file).then((snapshot)=>{
+                            snapshot.ref.getDownloadURL().then(url=>{
+                                db.collection("users").doc(cred.user.uid).update({url});
+                            })
+                        });
+                       
+                    } 
+                    
+                })
                 
-                db.collection("users").doc(cred.user.uid).set(rest);
-
-                if(avatar){
-                    storage.ref().child('avatars/'+cred.user.uid).put(this.state.file).then((snapshot)=>{
-                        snapshot.ref.getDownloadURL().then(url=>{
-                            db.collection("users").doc(cred.user.uid).update({url});
-                        })
-                    });
-                   
-                } 
+                data.uid=cred.user.uid;
+                console.log(data);
+                fetch("http://localhost:5000/create_user",{
+                    method:"POST",
+                    mode:"no-cors",
+                    headers:{
+                        'Content-Type': 'application/json'
+                    },
+                    body:JSON.stringify(data)
+                }).then(response=>{console.log(response)});
                 setTimeout(()=>{this.props.history.push('/');},3500);
             })
             .catch(err=>{this.setState({message:err.message})});

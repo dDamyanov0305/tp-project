@@ -10,15 +10,10 @@ import Paper from '@material-ui/core/Paper';
 import { Typography } from '@material-ui/core';
 import status from '../config/Status';
 import {red,green,amber,purple} from '@material-ui/core/colors';
+import {root} from '../config/css';
 
 const styles=theme=>({
-    root:{
-        marginTop:56,
-        marginLeft: theme.spacing.unit * 24,
-        marginRight: theme.spacing.unit * 24,
-        width: 'auto',
-        display: 'block',
-    },
+    root,
     image:{
         width:100,
     },
@@ -89,8 +84,8 @@ const Purchased = props =>{
                                     </Typography>
                                 </TableCell>
                                 <TableCell>
-                                    <Typography variant='overline' className={colors[3]}>
-                                        {status[3]}
+                                    <Typography variant='overline' className={colors[e.status]}>
+                                        {status[e.status]}
                                     </Typography>
                                 </TableCell>
                             </TableRow>

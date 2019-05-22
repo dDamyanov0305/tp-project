@@ -62,12 +62,12 @@ const AddressForm = props => {
         <Grid item xs={12} sm={6}>
           <TextField
             required
-            id="zip"
-            name="zip"
-            label="Zip / Postal code"
+            id="postalCode"
+            name="postalCode"
+            label="Postal code"
             fullWidth
             autoComplete="billing postal-code"
-            value={state.zip}
+            value={state.postalCode}
             onChange={props.handleChange}
           />
         </Grid>

@@ -3,12 +3,10 @@ import { Typography, Button } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import AlternateBody from './AlternateBody';
+import {root} from '../config/css';
 
 const styles = theme =>({
-    root:{
-        padding:10,
-        marginTop:56,
-    },
+    root,
     image:{
         width:100,
     },

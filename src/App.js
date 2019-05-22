@@ -7,9 +7,9 @@ import AlternateBody from './components/AlternateBody';
 import FormBase from './components/forms/signUp/FormBase';
 import BookForm from './components/forms/book/BookForm';
 import SignInForm from './components/forms/signIn/SignInForm'
-import CssBaseline from '@material-ui/core/CssBaseline';
 import Show from './components/Show';
 import Purchased from './components/Purchased';
+import Requests from './components/Requests';
 
 
 class App extends Component {
@@ -18,7 +18,12 @@ class App extends Component {
     this.state={
       user:null,
       items:[],
+      inputValue:'',
     }
+  }
+
+  handleChange=(e)=>{
+    this.setState({inputValue:e.target.value});
   }
 
 
@@ -48,20 +53,24 @@ class App extends Component {
           userData.basket=[];
           userData.uploads=[];
           
-          basket.forEach(item=>db.collection('books').doc(item).get().then(doc=>userData.basket.push({...doc.data(),id:item})));
+          if(basket!==undefined){
+            basket.forEach(item=>db.collection('books').doc(item).get().then(doc=>userData.basket.push({...doc.data(),id:item})));
+          }
           
           db.collection('books').where('uploaderID','==',user.uid).onSnapshot(snapshot=>{
 
-            userData.uploads = snapshot.docs.map(doc=>({...doc.data(),id:doc.id}));
+            if(snapshot!==undefined){
+              userData.uploads = snapshot.docs.map(doc=>({...doc.data(),id:doc.id}));
+            }
 
           })  
           
 
-          db.collection('requests').where('owner','==',user.uid).get().then(docs=>{
+          db.collection('requests').where('owner','==',user.uid).onSnapshot(snapshot=>{
 
             userData.requests=[];
 
-            docs.forEach(doc=>{
+            if(snapshot!==undefined){snapshot.docs.forEach(doc=>{
               
               const req = doc.data();
 
@@ -69,23 +78,23 @@ class App extends Component {
 
                 db.collection('users').doc(req.buyer).get().then(buyer => {
 
-                  userData.requests.push({ item:{...item.data(),id:item.id}, buyer : {...buyer.data(),uid:req.buyer}, seen:req.seen, status:req.status });
+                  userData.requests.push({ id:doc.id, item:{...item.data(),id:item.id}, buyer : {...buyer.data(),uid:req.buyer}, seen:req.seen, status:req.status });
 
                 });
 
               });
 
-            });
+            });}
 
             this.setState({user:userData});
 
           })
 
-          db.collection('requests').where('buyer','==',user.uid).get().then(docs=>{
+          db.collection('requests').where('buyer','==',user.uid).onSnapshot(snapshot=>{
 
             userData.purchased=[];
 
-            docs.forEach(doc=>{
+            if(snapshot!==undefined){snapshot.docs.forEach(doc=>{
 
               const req=doc.data()
 
@@ -99,7 +108,7 @@ class App extends Component {
 
               });
 
-            });
+            });}
 
             this.setState({user:userData});
 
@@ -138,7 +147,6 @@ class App extends Component {
     const purchased = this.state.user.basket.map(item=>item.id);
     
     this.state.user.basket.forEach(item=>{
-      db.collection('books').doc(item.id).update({available:false});
       db.collection('requests').doc().set(
         {
           item:item.id,
@@ -155,27 +163,46 @@ class App extends Component {
 
   }
 
+  handleSeen=()=>{
+    this.state.user.requests.forEach(e => {
+      db.collection('requests').doc(e.id).update({seen:true});
+    });
+  }
+
+  acceptRequest=(req)=>{
+    db.collection('requests').doc(req.id).update({status:2}).then(()=>{
+      db.collection('requests')
+        .where('item','==',req.item.id)
+        .where('status','<',2)
+        .where('status','>',2)
+        .update({staus:1});
+    });
+  }
+
+  rejectRequest=(req)=>{
+    db.collection('requests').doc(req.id).update({status:1});
+  }
 
   render() {
     const { state, props } = this;
     const items = state.items.filter(item=>item.available);
  
     return (
-      <>
-        <CssBaseline/>
+      <div>
         <Layout {...props} user={state.user}>
           <Switch>
             <Route path='/signIn' component={SignInForm}/>
             <Route path='/signUp' component={FormBase}/>
             <Route path='/b/:id' render={(props)=>(<Show item={state.items.find(e=>e.id===props.match.params.id)} books={state.items} hanhandleBasketChangedle={this.handleBasketChange}/>)}/>
-            <Route path='/add' render={()=>(<BookForm uploader={state.user}/>)}/>
+            <Route path='/new' render={()=>(<BookForm uploader={state.user}/>)}/>
             <Route path='/basket' render={()=>(<Basket items={state.user.basket} handleBasketChange={this.handleBasketChange} handleFinalize={this.handleFinalize}/>)}/>
             <Route path='/purchased' render={()=>(<Purchased items={state.user.purchased}/>)}/>
-            <Route path='/uploads' render={()=>(<AlternateBody items={state.user.uploads} {...props} handleBasketChange={null}/>)}/>
+            <Route path='/requests' render={()=>{this.handleSeen();return(<Requests items={state.user.requests} acceptRequest={this.acceptRequest} rejectRequest={this.rejectRequest}/>)}}/>
+            <Route path='/uploads' render={()=>(<AlternateBody items={state.user.uploads} {...props}/>)}/>
             <Route path='/' render={(props)=>(<AlternateBody items={items} {...props} handleBasketChange={this.handleBasketChange}/>)}/>
           </Switch>
         </Layout>
-      </>
+      </div>
     );
   }
 }

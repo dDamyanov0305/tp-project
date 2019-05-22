@@ -21,10 +21,8 @@ import {
 import drawerWidth from '../../config/DrawerWidth';
 
 const styles = theme =>({
-    root:{
-        color: theme.palette.background.paper,
-    },
     drawer: {
+        color: theme.palette.background.paper,
         width: drawerWidth,
         flexShrink: 0,
     },
@@ -49,16 +47,22 @@ const CustomDrawer = props =>{
 
         const { classes, user, history, open } = props;
         let isUserPresent = Boolean(user);
+
+        const handleClick=(url)=>{
+            history.push(url);
+            props.toggleDrawer();
+        }
         
         return(
             <Drawer 
                 anchor="left" 
-                open={open} 
-                variant='persistent'
+                open={open}
+                onClose={props.toggleDrawer} 
                 className={classes.drawer}
                 classes={{paper:classes.drawerPaper}}
             >
-                {isUserPresent&&<div className={classes.root}>
+                {isUserPresent&&
+                <div className={classes.root}>
                     <Grid container direction="column" alignItems="center">
                         <Grid item xs>
                             <Avatar src={user.url}className={classes.avatar}/>            
@@ -73,7 +77,7 @@ const CustomDrawer = props =>{
                                 variant="text" 
                                 color="inherit" 
                                 className={classes.button}
-                                onClick={()=>{history.push('/add')}}
+                                onClick={()=>{handleClick('/new')}}
                             >
                                 add book
                             </Button>      
@@ -89,7 +93,7 @@ const CustomDrawer = props =>{
                                 Subscriptions
                             </Typography>     
                         </ListItem>
-                        <ListItem button onClick={()=>{history.push('/uploads')}}> 
+                        <ListItem button onClick={()=>{handleClick('/uploads')}}> 
                             <ListItemIcon>
                                 <FolderSpecial/>
                             </ListItemIcon>                    
@@ -97,7 +101,7 @@ const CustomDrawer = props =>{
                                 Uploads
                             </Typography>     
                         </ListItem>
-                        <ListItem button onClick={()=>{history.push('/purchased')}}> 
+                        <ListItem button onClick={()=>{handleClick('/purchases')}}> 
                             <ListItemIcon>
                                 <CollectionsBookmark/>
                             </ListItemIcon>                    
@@ -113,7 +117,7 @@ const CustomDrawer = props =>{
                                 Chats
                             </Typography>     
                         </ListItem>
-                        <ListItem button onClick={()=>{history.push('/basket')}}>
+                        <ListItem button onClick={()=>{handleClick('/basket')}}>
                             <ListItemIcon >
                                 <ShoppingBasket/>
                             </ListItemIcon>
