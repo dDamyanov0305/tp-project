@@ -7,9 +7,9 @@ app.use(express.urlencoded({extended:false}));
 
 const gateway = braintree.connect({
     environment: braintree.Environment.Sandbox,
-    merchantId: "w9834vrh3k2km7wd",
-    publicKey: "c8vk9w93bkx8wdzw",
-    privateKey: "415e684205bbb538c9ea16f8b36e84ed"
+    merchantId: process.env.MERCHANT_ID,
+    publicKey: process.env.PUBLIC_KEY,
+    privateKey: process.env.PRIVATE_ID
   });
 
 app.post('/client_token',(req,res)=>{
@@ -25,8 +25,22 @@ app.post('/client_token',(req,res)=>{
 })
 
 app.post('/create_user',(req,res)=>{
-    const { firstName, lastName, email, uid, addressLine1, city, postalCode, dateOfBirth, region } = req.body;
-    console.log(firstName);
+    
+    console.log(req.body);
+
+    const { 
+        firstName, 
+        lastName, 
+        email, 
+        uid, 
+        addressLine1, 
+        city, 
+        postalCode, 
+        dateOfBirth, 
+        region 
+    } = req.body;
+
+    
 
     //make user customer
     gateway.customer.create({
@@ -65,9 +79,9 @@ app.post('/create_user',(req,res)=>{
       };
       
     gateway.merchantAccount.create(merchantAccountParams,(err, result) => {
+
         if(err)
             throw err;
-
         
         console.log(result);
     });
@@ -75,5 +89,4 @@ app.post('/create_user',(req,res)=>{
 
 })
 
-const PORT = 5000;
-app.listen(PORT,()=>{console.log("Server started on port "+PORT)})
+app.listen(process.env.PORT,()=>{console.log("Server started on port "+PORT)})
